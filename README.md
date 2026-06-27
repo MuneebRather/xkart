@@ -34,7 +34,7 @@ and growing into a fully containerized, cloud-deployed application.
 - [x] Product page
 - [x] Cart page
 - [x] Profile page
-- [ ] Settings page
+- [x] Settings page
 - [ ] 404 page
 
 ## Author
