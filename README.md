@@ -21,6 +21,8 @@ and growing into a fully containerized, cloud-deployed application.
 - Homepage
 - Product page
 - Cart page
+- Profile page
+- Settings page
 - 404 page
 
 ## Progress
@@ -31,6 +33,8 @@ and growing into a fully containerized, cloud-deployed application.
 - [x] Homepage completed
 - [ ] Product page
 - [ ] Cart page
+- [ ] Profile page
+- [ ] Settings page
 - [ ] 404 page
 
 ## Author
