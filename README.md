@@ -35,7 +35,7 @@ and growing into a fully containerized, cloud-deployed application.
 - [x] Cart page
 - [x] Profile page
 - [x] Settings page
-- [ ] 404 page
+- [x] 404 page
 
 ## Author
 Muneeb Rather
