@@ -27,7 +27,7 @@ and growing into a fully containerized, cloud-deployed application.
 
 ### Level 1 - Static Frontend
 - [x] Login page completed
-- [ ] Dashboard page
+- [x] Dashboard page
 - [ ] Homepage
 - [ ] Product page
 - [ ] Cart page
