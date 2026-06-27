@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Settings — Xkart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #f0f2f9;
+      --surface:  #ffffff;
+      --accent:   #4f6ef7;
+      --accent-h: #3a57e8;
+      --accent-soft: #eef1ff;
+      --text-1:   #0f1117;
+      --text-2:   #6b7280;
+      --border:   #e2e5f0;
+      --green:    #22c55e;
+      --orange:   #f97316;
+      --red:      #ef4444;
+      --radius:   14px;
+      --shadow:   0 2px 16px rgba(79,110,247,.08), 0 1px 4px rgba(0,0,0,.05);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+    .anim { opacity: 0; }
+    .anim.visible { animation: fadeUp .55s cubic-bezier(.22,.68,0,1.1) forwards; }
+
+    /* ── navbar ──────────────────────────────── */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px; height: 60px;
+      display: flex; align-items: center; gap: 24px;
+      animation: fadeIn .4s ease both;
+    }
+    .logo { display: flex; align-items: center; gap: 8px; text-decoration: none; flex-shrink: 0; }
+    .logo-icon { width: 32px; height: 32px; background: var(--accent); border-radius: 8px; display: grid; place-items: center; box-shadow: 0 2px 8px rgba(79,110,247,.3); }
+    .logo-text { font-size: 1.15rem; font-weight: 700; letter-spacing: -.3px; color: var(--text-1); }
+    .logo-text span { color: var(--accent); }
+    .search-bar { flex: 1; max-width: 480px; position: relative; }
+    .search-bar input {
+      width: 100%; padding: 9px 16px 9px 38px; border: 1.5px solid var(--border); border-radius: 9px;
+      font-size: .875rem; font-family: inherit; background: #f8f9fd; color: var(--text-1); outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,110,247,.11); background: #fff; }
+    .search-bar svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: #9ca3af; pointer-events: none; }
+    .nav-links { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+    .nav-link { padding: 7px 12px; border-radius: 8px; font-size: .85rem; font-weight: 500; color: var(--text-2); text-decoration: none; transition: background .15s, color .15s; }
+    .nav-link:hover { background: var(--accent-soft); color: var(--accent); }
+    .cart-btn { position: relative; width: 36px; height: 36px; background: none; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; display: grid; place-items: center; color: var(--text-2); transition: border-color .15s, color .15s, background .15s; }
+    .cart-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .cart-badge { position: absolute; top: -5px; right: -5px; width: 16px; height: 16px; background: var(--red); border-radius: 50%; font-size: .62rem; font-weight: 700; color: #fff; display: grid; place-items: center; }
+
+    /* ── breadcrumb ──────────────────────────── */
+    .breadcrumb { margin: 20px 40px 0; font-size: .8rem; color: var(--text-2); display: flex; align-items: center; gap: 6px; animation: fadeIn .4s ease both; }
+    .breadcrumb a { color: var(--text-2); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb .current { color: var(--text-1); font-weight: 600; }
+
+    /* ── account layout (shared with profile.html) ── */
+    .account-layout {
+      margin: 16px 40px 48px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 24px;
+      align-items: flex-start;
+    }
+    .account-sidebar {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 20px; position: sticky; top: 84px;
+    }
+    .sidebar-user { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+    .sidebar-avatar {
+      width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, #4f6ef7, #7c3aed);
+      color: #fff; display: grid; place-items: center; font-size: .85rem; font-weight: 700; flex-shrink: 0;
+    }
+    .sidebar-user .su-name { font-size: .85rem; font-weight: 700; line-height: 1.3; }
+    .sidebar-user .su-email { font-size: .72rem; color: var(--text-2); }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 2px; }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 10px; padding: 9px 10px; border-radius: 8px;
+      font-size: .85rem; font-weight: 500; color: var(--text-2); text-decoration: none; transition: background .15s, color .15s;
+    }
+    .sidebar-link:hover { background: var(--accent-soft); color: var(--accent); }
+    .sidebar-link.active { background: var(--accent-soft); color: var(--accent); font-weight: 700; }
+    .sidebar-link .sl-icon { width: 16px; text-align: center; flex-shrink: 0; }
+    .sidebar-divider { height: 1px; background: var(--border); margin: 10px 0; }
+    .sidebar-link.danger { color: var(--red); }
+    .sidebar-link.danger:hover { background: #fee2e2; color: var(--red); }
+
+    .page-head { margin-bottom: 18px; }
+    .page-head h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -.4px; }
+    .page-head p { font-size: .85rem; color: var(--text-2); margin-top: 4px; }
+
+    /* ── content card ────────────────────────── */
+    .content-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow); padding: 24px; margin-bottom: 20px;
+    }
+    .content-card-head { margin-bottom: 18px; }
+    .content-card-head h3 { font-size: 1rem; font-weight: 700; margin-bottom: 3px; }
+    .content-card-head .cch-sub { font-size: .8rem; color: var(--text-2); }
+
+    /* ── password form ──────────────────────── */
+    .form-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; max-width: 380px; }
+    .form-field label { font-size: .78rem; font-weight: 600; color: var(--text-2); }
+    .password-input-wrap { position: relative; }
+    .password-input-wrap input {
+      width: 100%; padding: 10px 40px 10px 12px; border: 1.5px solid var(--border); border-radius: 9px;
+      font-size: .87rem; font-family: inherit; color: var(--text-1); background: #fff; outline: none;
+      transition: border-color .2s;
+    }
+    .password-input-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,110,247,.11); }
+    .toggle-pw-btn {
+      position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer; color: var(--text-2); font-size: .78rem; font-weight: 600;
+    }
+    .toggle-pw-btn:hover { color: var(--accent); }
+
+    .strength-meter { margin-top: 8px; }
+    .strength-track { height: 5px; border-radius: 4px; background: var(--border); overflow: hidden; }
+    .strength-fill { height: 100%; width: 0%; border-radius: 4px; transition: width .25s, background .25s; }
+    .strength-label { font-size: .72rem; color: var(--text-2); margin-top: 5px; }
+
+    .btn-primary {
+      padding: 10px 22px; background: var(--accent); color: #fff; border: none; border-radius: 9px;
+      font-size: .85rem; font-weight: 700; font-family: inherit; cursor: pointer;
+      transition: background .2s; box-shadow: 0 3px 10px rgba(79,110,247,.25);
+    }
+    .btn-primary:hover { background: var(--accent-h); }
+    .btn-secondary {
+      padding: 10px 22px; background: var(--surface); color: var(--text-1); border: 1.5px solid var(--border);
+      border-radius: 9px; font-size: .85rem; font-weight: 600; font-family: inherit; cursor: pointer;
+      transition: border-color .2s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+    .inline-msg { font-size: .8rem; font-weight: 600; margin-top: 12px; display: none; align-items: center; gap: 6px; }
+    .inline-msg.show { display: flex; animation: fadeIn .3s ease both; }
+    .inline-msg.success { color: var(--green); }
+    .inline-msg.error { color: var(--red); }
+
+    /* ── toggle rows ─────────────────────────── */
+    .toggle-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+    }
+    .toggle-row:last-child { border-bottom: none; }
+    .toggle-row-text .tr-title { font-size: .87rem; font-weight: 600; margin-bottom: 2px; }
+    .toggle-row-text .tr-desc { font-size: .78rem; color: var(--text-2); max-width: 440px; }
+
+    .switch { position: relative; width: 42px; height: 24px; flex-shrink: 0; }
+    .switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .switch-track {
+      position: absolute; inset: 0; background: var(--border); border-radius: 999px;
+      cursor: pointer; transition: background .2s;
+    }
+    .switch-track::before {
+      content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px;
+      background: #fff; border-radius: 50%; transition: transform .2s; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+    .switch input:checked + .switch-track { background: var(--accent); }
+    .switch input:checked + .switch-track::before { transform: translateX(18px); }
+
+    /* ── danger zone ─────────────────────────── */
+    .danger-card { border: 1.5px solid #fecaca; }
+    .danger-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+    }
+    .danger-row:last-child { border-bottom: none; }
+    .danger-row .dr-title { font-size: .87rem; font-weight: 600; margin-bottom: 2px; }
+    .danger-row .dr-desc { font-size: .78rem; color: var(--text-2); max-width: 420px; }
+    .btn-danger-outline {
+      padding: 9px 18px; background: var(--surface); color: var(--red); border: 1.5px solid #fecaca;
+      border-radius: 9px; font-size: .83rem; font-weight: 600; font-family: inherit; cursor: pointer;
+      transition: background .2s; flex-shrink: 0; white-space: nowrap;
+    }
+    .btn-danger-outline:hover { background: #fee2e2; }
+    .btn-danger-solid {
+      padding: 9px 18px; background: var(--red); color: #fff; border: none;
+      border-radius: 9px; font-size: .83rem; font-weight: 700; font-family: inherit; cursor: pointer;
+      transition: background .2s; flex-shrink: 0; white-space: nowrap;
+    }
+    .btn-danger-solid:hover { background: #dc2626; }
+    .danger-banner {
+      font-size: .8rem; font-weight: 600; color: var(--red); background: #fee2e2;
+      padding: 10px 14px; border-radius: 9px; margin-top: 14px; display: none; align-items: center; gap: 6px;
+    }
+    .danger-banner.show { display: flex; animation: shake .3s ease both; }
+
+    /* ── footer ──────────────────────────────── */
+    .footer {
+      margin-top: 40px; background: var(--surface); border-top: 1px solid var(--border);
+      padding: 32px 40px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px;
+    }
+    .footer-brand .logo-text { font-size: 1.2rem; margin-bottom: 8px; display: block; }
+    .footer-brand p { font-size: .83rem; color: var(--text-2); line-height: 1.6; max-width: 240px; }
+    .footer-col h4 { font-size: .83rem; font-weight: 700; margin-bottom: 12px; }
+    .footer-col a { display: block; font-size: .8rem; color: var(--text-2); text-decoration: none; margin-bottom: 7px; transition: color .15s; }
+    .footer-col a:hover { color: var(--accent); }
+    .footer-bottom {
+      background: var(--surface); border-top: 1px solid var(--border); padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between; font-size: .78rem; color: var(--text-2);
+    }
+
+    /* ── responsive ──────────────────────────── */
+    @media (max-width: 980px) {
+      .account-layout { grid-template-columns: 1fr; }
+      .account-sidebar { position: static; }
+      .footer { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .navbar { padding: 0 16px; gap: 12px; }
+      .search-bar { display: none; }
+      .account-layout, .breadcrumb { margin-left: 16px; margin-right: 16px; }
+      .footer, .footer-bottom { padding-left: 16px; padding-right: 16px; }
+      .footer { grid-template-columns: 1fr; }
+      .toggle-row, .danger-row { flex-wrap: wrap; gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+      </div>
+      <span class="logo-text">X<span>kart</span></span>
+    </a>
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search products, brands and more..."/>
+    </div>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="products.html" class="nav-link">Products</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="profile.html" class="nav-link" style="color:var(--accent);">My Account</a>
+      <button class="cart-btn" title="Cart">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-badge">2</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Breadcrumb ── -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> / <a href="profile.html">My Account</a> / <span class="current">Settings</span>
+  </div>
+
+  <div class="account-layout">
+
+    <!-- ── Sidebar (same as profile.html) ── -->
+    <aside class="account-sidebar anim">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">MR</div>
+        <div>
+          <div class="su-name">Muneeb Rather</div>
+          <div class="su-email">muneebrather@email.com</div>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="profile.html" class="sidebar-link"><span class="sl-icon">👤</span> Profile</a>
+        <a href="#" class="sidebar-link"><span class="sl-icon">📦</span> Orders</a>
+        <a href="#" class="sidebar-link"><span class="sl-icon">♡</span> Wishlist</a>
+        <a href="#" class="sidebar-link"><span class="sl-icon">📍</span> Addresses</a>
+        <a href="#" class="sidebar-link"><span class="sl-icon">💳</span> Payment Methods</a>
+        <a href="settings.html" class="sidebar-link active"><span class="sl-icon">⚙️</span> Settings</a>
+        <div class="sidebar-divider"></div>
+        <a href="login.html" class="sidebar-link danger"><span class="sl-icon">⏻</span> Sign Out</a>
+      </nav>
+    </aside>
+
+    <!-- ── Main content ── -->
+    <main>
+      <div class="page-head anim" style="animation-delay:.04s">
+        <h1>Settings</h1>
+        <p>Manage your password, notifications, and privacy preferences.</p>
+      </div>
+
+      <!-- Change password -->
+      <div class="content-card anim" style="animation-delay:.06s">
+        <div class="content-card-head">
+          <h3>Change Password</h3>
+          <div class="cch-sub">Use at least 8 characters with a mix of letters, numbers and symbols.</div>
+        </div>
+        <form id="passwordForm">
+          <div class="form-field">
+            <label>Current Password</label>
+            <div class="password-input-wrap">
+              <input type="password" id="currentPw" placeholder="Enter current password" required/>
+              <button type="button" class="toggle-pw-btn" data-target="currentPw">Show</button>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>New Password</label>
+            <div class="password-input-wrap">
+              <input type="password" id="newPw" placeholder="Enter new password" required/>
+              <button type="button" class="toggle-pw-btn" data-target="newPw">Show</button>
+            </div>
+            <div class="strength-meter">
+              <div class="strength-track"><div class="strength-fill" id="strengthFill"></div></div>
+              <div class="strength-label" id="strengthLabel">Password strength</div>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Confirm New Password</label>
+            <div class="password-input-wrap">
+              <input type="password" id="confirmPw" placeholder="Re-enter new password" required/>
+              <button type="button" class="toggle-pw-btn" data-target="confirmPw">Show</button>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">Update Password</button>
+          <div class="inline-msg" id="pwMsg"></div>
+        </form>
+      </div>
+
+      <!-- Notifications -->
+      <div class="content-card anim" style="animation-delay:.08s">
+        <div class="content-card-head"><h3>Notifications</h3></div>
+
+        <div class="toggle-row">
+          <div class="toggle-row-text">
+            <div class="tr-title">Order updates</div>
+            <div class="tr-desc">Shipping confirmations, delivery status and order changes.</div>
+          </div>
+          <label class="switch"><input type="checkbox" checked/><span class="switch-track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-row-text">
+            <div class="tr-title">Promotions & deals</div>
+            <div class="tr-desc">Sales, flash deals and personalized discount codes.</div>
+          </div>
+          <label class="switch"><input type="checkbox" checked/><span class="switch-track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-row-text">
+            <div class="tr-title">Newsletter</div>
+            <div class="tr-desc">Weekly roundup of new arrivals and editor picks.</div>
+          </div>
+          <label class="switch"><input type="checkbox"/><span class="switch-track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-row-text">
+            <div class="tr-title">SMS alerts</div>
+            <div class="tr-desc">Text messages for time-sensitive delivery updates.</div>
+          </div>
+          <label class="switch"><input type="checkbox" checked/><span class="switch-track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-row-text">
+            <div class="tr-title">Push notifications</div>
+            <div class="tr-desc">Real-time alerts on this device when you're signed in.</div>
+          </div>
+          <label class="switch"><input type="checkbox"/><span class="switch-track"></span></label>
+        </div>
+      </div>
+
+      <!-- Privacy -->
+      <div class="content-card anim" style="animation-delay:.1s">
+        <div class="content-card-head"><h3>Privacy</h3></div>
+
+        <div class="toggle-row">
+          <div class="toggle-row-text">
+            <div class="tr-title">Show profile to other shoppers</div>
+            <div class="tr-desc">Lets others see your public reviews and Q&A activity.</div>
+          </div>
+          <label class="switch"><input type="checkbox" checked/><span class="switch-track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-row-text">
+            <div class="tr-title">Personalized ads</div>
+            <div class="tr-desc">Use your browsing activity to show more relevant ads.</div>
+          </div>
+          <label class="switch"><input type="checkbox"/><span class="switch-track"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-row-text">
+            <div class="tr-title">Download my data</div>
+            <div class="tr-desc">Get a copy of your orders, reviews and account details.</div>
+          </div>
+          <button class="btn-secondary">Request Export</button>
+        </div>
+      </div>
+
+      <!-- Danger zone -->
+      <div class="content-card danger-card anim" style="animation-delay:.12s">
+        <div class="content-card-head"><h3 style="color:var(--red);">Danger Zone</h3></div>
+
+        <div class="danger-row">
+          <div>
+            <div class="dr-title">Deactivate account</div>
+            <div class="dr-desc">Temporarily hide your profile and pause notifications. You can reactivate anytime by signing back in.</div>
+          </div>
+          <button class="btn-danger-outline" id="deactivateBtn">Deactivate</button>
+        </div>
+        <div class="danger-row">
+          <div>
+            <div class="dr-title">Delete account permanently</div>
+            <div class="dr-desc">Erases your profile, order history and saved data. This action cannot be undone.</div>
+          </div>
+          <button class="btn-danger-solid" id="deleteBtn">Delete Account</button>
+        </div>
+        <div class="danger-banner" id="dangerBanner"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <span class="logo-text">X<span style="color:var(--accent)">kart</span></span>
+      <p>Your one-stop shop for everything you need. Quality products, fast delivery, best prices.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Careers</a>
+      <a href="#">Press</a>
+      <a href="#">Blog</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#">Help Center</a>
+      <a href="#">Returns</a>
+      <a href="#">Track Order</a>
+      <a href="#">Contact Us</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <span>© 2026 Xkart. All rights reserved.</span>
+    <span>Built with ❤️ for DevOps practice</span>
+  </div>
+
+  <script>
+    // Scroll-in animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+
+    // Show/hide password
+    document.querySelectorAll('.toggle-pw-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = document.getElementById(btn.dataset.target);
+        const isPw = input.type === 'password';
+        input.type = isPw ? 'text' : 'password';
+        btn.textContent = isPw ? 'Hide' : 'Show';
+      });
+    });
+
+    // Password strength meter
+    const newPw = document.getElementById('newPw');
+    const strengthFill = document.getElementById('strengthFill');
+    const strengthLabel = document.getElementById('strengthLabel');
+
+    newPw.addEventListener('input', () => {
+      const val = newPw.value;
+      let score = 0;
+      if (val.length >= 8) score++;
+      if (val.length >= 12) score++;
+      if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+      if (/\d/.test(val)) score++;
+      if (/[^A-Za-z0-9]/.test(val)) score++;
+
+      let pct = 0, color = var_border(), label = 'Password strength';
+      if (val.length === 0) { pct = 0; label = 'Password strength'; }
+      else if (score <= 1) { pct = 25; color = '#ef4444'; label = 'Weak'; }
+      else if (score <= 2) { pct = 50; color = '#f97316'; label = 'Fair'; }
+      else if (score <= 3) { pct = 75; color = '#f59e0b'; label = 'Good'; }
+      else { pct = 100; color = '#22c55e'; label = 'Strong'; }
+
+      strengthFill.style.width = pct + '%';
+      strengthFill.style.background = color;
+      strengthLabel.textContent = label;
+
+      function var_border() { return getComputedStyle(document.documentElement).getPropertyValue('--border'); }
+    });
+
+    // Password form submit
+    const pwForm = document.getElementById('passwordForm');
+    const pwMsg = document.getElementById('pwMsg');
+    pwForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const newVal = document.getElementById('newPw').value;
+      const confirmVal = document.getElementById('confirmPw').value;
+
+      if (newVal.length < 8) {
+        pwMsg.textContent = '✕ New password must be at least 8 characters';
+        pwMsg.className = 'inline-msg error show';
+        return;
+      }
+      if (newVal !== confirmVal) {
+        pwMsg.textContent = '✕ New password and confirmation do not match';
+        pwMsg.className = 'inline-msg error show';
+        return;
+      }
+      pwMsg.textContent = '✓ Password updated successfully';
+      pwMsg.className = 'inline-msg success show';
+      pwForm.reset();
+      strengthFill.style.width = '0%';
+      strengthLabel.textContent = 'Password strength';
+      setTimeout(() => pwMsg.classList.remove('show'), 3500);
+    });
+
+    // Danger zone actions
+    const dangerBanner = document.getElementById('dangerBanner');
+
+    document.getElementById('deactivateBtn').addEventListener('click', () => {
+      if (confirm('Deactivate your account? You can reactivate anytime by signing back in.')) {
+        dangerBanner.textContent = '⚠ Your account has been deactivated.';
+        dangerBanner.classList.add('show');
+      }
+    });
+
+    document.getElementById('deleteBtn').addEventListener('click', () => {
+      if (confirm('Permanently delete your account? This cannot be undone.')) {
+        dangerBanner.textContent = '⚠ Account deletion requested. You will receive a confirmation email.';
+        dangerBanner.classList.add('show');
+      }
+    });
+  </script>
+
+  <script>
+  document.querySelector(".cart-btn").addEventListener("click", function () {
+    window.location.href = "cart.html";
+  });
+  </script>
+
+</body>
+</html>
