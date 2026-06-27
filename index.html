@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Xkart — Shop Online</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #f0f2f9;
+      --surface:  #ffffff;
+      --accent:   #4f6ef7;
+      --accent-h: #3a57e8;
+      --accent-soft: #eef1ff;
+      --text-1:   #0f1117;
+      --text-2:   #6b7280;
+      --border:   #e2e5f0;
+      --green:    #22c55e;
+      --orange:   #f97316;
+      --red:      #ef4444;
+      --radius:   14px;
+      --shadow:   0 2px 16px rgba(79,110,247,.08), 0 1px 4px rgba(0,0,0,.05);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── animations ──────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    .anim { opacity: 0; }
+    .anim.visible { animation: fadeUp .55s cubic-bezier(.22,.68,0,1.1) forwards; }
+
+    /* ── navbar ──────────────────────────────── */
+    .navbar {
+      position: sticky;
+      top: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      animation: fadeIn .4s ease both;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 2px 8px rgba(79,110,247,.3);
+    }
+
+    .logo-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -.3px;
+      color: var(--text-1);
+    }
+    .logo-text span { color: var(--accent); }
+
+    .search-bar {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 9px 16px 9px 38px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-size: .875rem;
+      font-family: inherit;
+      background: #f8f9fd;
+      color: var(--text-1);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .search-bar input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79,110,247,.11);
+      background: #fff;
+    }
+
+    .search-bar svg {
+      position: absolute;
+      left: 11px; top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      pointer-events: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: auto;
+    }
+
+    .nav-link {
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      transition: background .15s, color .15s;
+    }
+    .nav-link:hover { background: var(--accent-soft); color: var(--accent); }
+
+    .nav-btn {
+      padding: 7px 16px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background .2s, box-shadow .2s;
+      box-shadow: 0 2px 8px rgba(79,110,247,.25);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nav-btn:hover { background: var(--accent-h); }
+
+    .cart-btn {
+      position: relative;
+      width: 36px; height: 36px;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: var(--text-2);
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .cart-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+    .cart-badge {
+      position: absolute;
+      top: -5px; right: -5px;
+      width: 16px; height: 16px;
+      background: var(--red);
+      border-radius: 50%;
+      font-size: .62rem;
+      font-weight: 700;
+      color: #fff;
+      display: grid;
+      place-items: center;
+    }
+
+    /* ── hero ────────────────────────────────── */
+    .hero {
+      margin: 24px 40px;
+      background: linear-gradient(135deg, #4f6ef7 0%, #7c3aed 100%);
+      border-radius: 20px;
+      padding: 56px 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+      animation: fadeUp .6s cubic-bezier(.22,.68,0,1.1) .1s both;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      background: rgba(255,255,255,.06);
+      border-radius: 50%;
+      top: -100px; right: -100px;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 250px; height: 250px;
+      background: rgba(255,255,255,.04);
+      border-radius: 50%;
+      bottom: -80px; left: 40%;
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: .78rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      letter-spacing: -.6px;
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: .95rem;
+      color: rgba(255,255,255,.8);
+      margin-bottom: 28px;
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    .hero-btns { display: flex; gap: 12px; }
+
+    .hero-btn-primary {
+      padding: 12px 28px;
+      background: #fff;
+      color: var(--accent);
+      border: none;
+      border-radius: 10px;
+      font-size: .9rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      transition: transform .15s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(0,0,0,.15);
+    }
+    .hero-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,.2); }
+
+    .hero-btn-secondary {
+      padding: 12px 28px;
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      border: 1.5px solid rgba(255,255,255,.3);
+      border-radius: 10px;
+      font-size: .9rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .hero-btn-secondary:hover { background: rgba(255,255,255,.22); }
+
+    .hero-visual {
+      font-size: 7rem;
+      position: relative;
+      z-index: 1;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    /* ── section ─────────────────────────────── */
+    .section { margin: 0 40px 32px; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -.2px;
+    }
+
+    .section-link {
+      font-size: .83rem;
+      color: var(--accent);
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .section-link:hover { text-decoration: underline; }
+
+    /* ── categories ──────────────────────────── */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+
+    .cat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      color: var(--text-1);
+      display: block;
+    }
+    .cat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(79,110,247,.13);
+      border-color: var(--accent);
+    }
+
+    .cat-icon {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .cat-name {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--text-1);
+    }
+
+    .cat-count {
+      font-size: .72rem;
+      color: var(--text-2);
+      margin-top: 2px;
+    }
+
+    /* ── products grid ───────────────────────── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text-1);
+      display: block;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(79,110,247,.14);
+    }
+
+    .product-img {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      background: linear-gradient(135deg, #f8f9fd, #eef1ff);
+      position: relative;
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 10px; left: 10px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: .68rem;
+      font-weight: 700;
+    }
+    .badge-new  { background: #dcfce7; color: #15803d; }
+    .badge-sale { background: #fee2e2; color: #b91c1c; }
+    .badge-hot  { background: #fef9c3; color: #a16207; }
+
+    .wishlist-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      width: 30px; height: 30px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: var(--text-2);
+      transition: color .2s, border-color .2s;
+      font-size: .9rem;
+    }
+    .wishlist-btn:hover { color: var(--red); border-color: var(--red); }
+
+    .product-body { padding: 14px 16px; }
+
+    .product-category {
+      font-size: .72rem;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      margin-bottom: 4px;
+    }
+
+    .product-name {
+      font-size: .88rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 10px;
+      font-size: .75rem;
+      color: var(--text-2);
+    }
+
+    .stars { color: #f59e0b; letter-spacing: 1px; }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .price { font-size: 1rem; font-weight: 700; color: var(--text-1); }
+    .price-old { font-size: .78rem; color: var(--text-2); text-decoration: line-through; margin-left: 4px; }
+
+    .add-btn {
+      width: 32px; height: 32px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      transition: background .2s, transform .15s;
+      box-shadow: 0 2px 8px rgba(79,110,247,.25);
+    }
+    .add-btn:hover { background: var(--accent-h); transform: scale(1.08); }
+
+    /* ── deals banner ────────────────────────── */
+    .deals-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .deal-card {
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: transform .2s;
+    }
+    .deal-card:hover { transform: translateY(-2px); }
+
+    .deal-card.blue {
+      background: linear-gradient(135deg, #4f6ef7, #6d28d9);
+    }
+    .deal-card.orange {
+      background: linear-gradient(135deg, #f97316, #ef4444);
+    }
+
+    .deal-content { position: relative; z-index: 1; }
+    .deal-tag {
+      font-size: .72rem;
+      font-weight: 700;
+      color: rgba(255,255,255,.8);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 6px;
+    }
+    .deal-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+    .deal-sub {
+      font-size: .82rem;
+      color: rgba(255,255,255,.75);
+      margin-bottom: 16px;
+    }
+    .deal-btn {
+      padding: 8px 20px;
+      background: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: .82rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: transform .15s;
+    }
+    .deal-btn:hover { transform: scale(1.04); }
+    .deal-card.blue  .deal-btn { color: var(--accent); }
+    .deal-card.orange .deal-btn { color: var(--orange); }
+
+    .deal-emoji {
+      font-size: 5rem;
+      position: relative; z-index: 1;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* ── footer ──────────────────────────────── */
+    .footer {
+      margin-top: 40px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 32px;
+    }
+
+    .footer-brand .logo-text { font-size: 1.2rem; margin-bottom: 8px; display: block; }
+    .footer-brand p { font-size: .83rem; color: var(--text-2); line-height: 1.6; max-width: 240px; }
+
+    .footer-col h4 { font-size: .83rem; font-weight: 700; margin-bottom: 12px; }
+    .footer-col a {
+      display: block;
+      font-size: .8rem;
+      color: var(--text-2);
+      text-decoration: none;
+      margin-bottom: 7px;
+      transition: color .15s;
+    }
+    .footer-col a:hover { color: var(--accent); }
+
+    .footer-bottom {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: .78rem;
+      color: var(--text-2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+      </div>
+      <span class="logo-text">X<span>kart</span></span>
+    </a>
+
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search products, brands and more..."/>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="products.html" class="nav-link">Products</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="login.html" class="nav-link">Sign in</a>
+      <button class="cart-btn" title="Cart">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-badge">2</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-tag">🔥 Summer Sale — Up to 50% Off</div>
+      <h1>Shop Smarter.<br/>Live Better.</h1>
+      <p>Discover thousands of products from top brands. Fast delivery, easy returns, and the best prices guaranteed.</p>
+      <div class="hero-btns">
+        <button class="hero-btn-primary">Shop Now</button>
+        <button class="hero-btn-secondary">View Deals</button>
+      </div>
+    </div>
+    <div class="hero-visual">🛍️</div>
+  </div>
+
+  <!-- ── Categories ── -->
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title anim">Shop by Category</h2>
+      <a href="#" class="section-link">View all</a>
+    </div>
+    <div class="categories-grid">
+      <a href="#" class="cat-card anim" style="animation-delay:.05s">
+        <span class="cat-icon">📱</span>
+        <div class="cat-name">Electronics</div>
+        <div class="cat-count">1,240 items</div>
+      </a>
+      <a href="#" class="cat-card anim" style="animation-delay:.1s">
+        <span class="cat-icon">👗</span>
+        <div class="cat-name">Fashion</div>
+        <div class="cat-count">3,850 items</div>
+      </a>
+      <a href="#" class="cat-card anim" style="animation-delay:.15s">
+        <span class="cat-icon">🏠</span>
+        <div class="cat-name">Home</div>
+        <div class="cat-count">980 items</div>
+      </a>
+      <a href="#" class="cat-card anim" style="animation-delay:.2s">
+        <span class="cat-icon">⚽</span>
+        <div class="cat-name">Sports</div>
+        <div class="cat-count">640 items</div>
+      </a>
+      <a href="#" class="cat-card anim" style="animation-delay:.25s">
+        <span class="cat-icon">💄</span>
+        <div class="cat-name">Beauty</div>
+        <div class="cat-count">1,100 items</div>
+      </a>
+      <a href="#" class="cat-card anim" style="animation-delay:.3s">
+        <span class="cat-icon">📚</span>
+        <div class="cat-name">Books</div>
+        <div class="cat-count">2,200 items</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Featured Products ── -->
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title anim">Featured Products</h2>
+      <a href="products.html" class="section-link">View all</a>
+    </div>
+    <div class="products-grid">
+
+      <a href="product.html" class="product-card anim" style="animation-delay:.05s">
+        <div class="product-img">
+          🎧
+          <span class="product-badge badge-hot">🔥 Hot</span>
+          <button class="wishlist-btn">♡</button>
+        </div>
+        <div class="product-body">
+          <div class="product-category">Electronics</div>
+          <div class="product-name">Sony WH-1000XM5 Headphones</div>
+          <div class="product-rating"><span class="stars">★★★★★</span> 4.9 (2.1k)</div>
+          <div class="product-footer">
+            <div class="price-wrap">
+              <span class="price">$299</span>
+              <span class="price-old">$380</span>
+            </div>
+            <button class="add-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+      <a href="product.html" class="product-card anim" style="animation-delay:.1s">
+        <div class="product-img">
+          👟
+          <span class="product-badge badge-new">✨ New</span>
+          <button class="wishlist-btn">♡</button>
+        </div>
+        <div class="product-body">
+          <div class="product-category">Footwear</div>
+          <div class="product-name">Nike Air Max 270 Running</div>
+          <div class="product-rating"><span class="stars">★★★★★</span> 4.8 (1.4k)</div>
+          <div class="product-footer">
+            <div class="price-wrap">
+              <span class="price">$149</span>
+              <span class="price-old">$190</span>
+            </div>
+            <button class="add-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+      <a href="product.html" class="product-card anim" style="animation-delay:.15s">
+        <div class="product-img">
+          ⌚
+          <span class="product-badge badge-sale">🏷 Sale</span>
+          <button class="wishlist-btn">♡</button>
+        </div>
+        <div class="product-body">
+          <div class="product-category">Electronics</div>
+          <div class="product-name">Apple Watch SE 2nd Gen</div>
+          <div class="product-rating"><span class="stars">★★★★☆</span> 4.7 (890)</div>
+          <div class="product-footer">
+            <div class="price-wrap">
+              <span class="price">$249</span>
+              <span class="price-old">$299</span>
+            </div>
+            <button class="add-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+      <a href="product.html" class="product-card anim" style="animation-delay:.2s">
+        <div class="product-img">
+          👜
+          <button class="wishlist-btn">♡</button>
+        </div>
+        <div class="product-body">
+          <div class="product-category">Fashion</div>
+          <div class="product-name">Premium Leather Handbag</div>
+          <div class="product-rating"><span class="stars">★★★★★</span> 4.9 (560)</div>
+          <div class="product-footer">
+            <div class="price-wrap">
+              <span class="price">$189</span>
+            </div>
+            <button class="add-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── Deals ── -->
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title anim">Today's Deals</h2>
+    </div>
+    <div class="deals-grid">
+      <div class="deal-card blue anim" style="animation-delay:.05s">
+        <div class="deal-content">
+          <div class="deal-tag">Limited Time</div>
+          <div class="deal-title">Up to 40% Off<br/>Electronics</div>
+          <div class="deal-sub">Phones, laptops, headphones & more</div>
+          <button class="deal-btn">Shop Electronics</button>
+        </div>
+        <div class="deal-emoji">📱</div>
+      </div>
+      <div class="deal-card orange anim" style="animation-delay:.1s">
+        <div class="deal-content">
+          <div class="deal-tag">Flash Sale</div>
+          <div class="deal-title">50% Off<br/>Fashion Week</div>
+          <div class="deal-sub">Clothing, shoes, accessories & bags</div>
+          <button class="deal-btn">Shop Fashion</button>
+        </div>
+        <div class="deal-emoji">👗</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <span class="logo-text">X<span style="color:var(--accent)">kart</span></span>
+      <p>Your one-stop shop for everything you need. Quality products, fast delivery, best prices.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Careers</a>
+      <a href="#">Press</a>
+      <a href="#">Blog</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#">Help Center</a>
+      <a href="#">Returns</a>
+      <a href="#">Track Order</a>
+      <a href="#">Contact Us</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <span>© 2026 Xkart. All rights reserved.</span>
+    <span>Built with ❤️ for DevOps practice</span>
+  </div>
+
+  <script>
+    // Scroll animation observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
