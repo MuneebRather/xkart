@@ -16,11 +16,22 @@ and growing into a fully containerized, cloud-deployed application.
 
 ## Levels
 ### Level 1 - Static Frontend
+- Login page
+- Dashboard page
 - Homepage
 - Product page
 - Cart page
-- Login page
 - 404 page
+
+## Progress
+
+### Level 1 - Static Frontend
+- [x] Login page completed
+- [ ] Dashboard page
+- [ ] Homepage
+- [ ] Product page
+- [ ] Cart page
+- [ ] 404 page
 
 ## Author
 Muneeb Rather
