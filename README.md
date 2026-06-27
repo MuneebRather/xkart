@@ -31,7 +31,7 @@ and growing into a fully containerized, cloud-deployed application.
 - [x] Login page completed
 - [x] Dashboard page completed
 - [x] Homepage completed
-- [ ] Product page
+- [x] Product page
 - [ ] Cart page
 - [ ] Profile page
 - [ ] Settings page
