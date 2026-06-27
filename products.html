@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sony WH-1000XM5 Wireless Headphones — Xkart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #f0f2f9;
+      --surface:  #ffffff;
+      --accent:   #4f6ef7;
+      --accent-h: #3a57e8;
+      --accent-soft: #eef1ff;
+      --text-1:   #0f1117;
+      --text-2:   #6b7280;
+      --border:   #e2e5f0;
+      --green:    #22c55e;
+      --orange:   #f97316;
+      --red:      #ef4444;
+      --radius:   14px;
+      --shadow:   0 2px 16px rgba(79,110,247,.08), 0 1px 4px rgba(0,0,0,.05);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-1);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── animations ──────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+    @keyframes pop {
+      0%   { transform: scale(1); }
+      40%  { transform: scale(1.12); }
+      100% { transform: scale(1); }
+    }
+
+    .anim { opacity: 0; }
+    .anim.visible { animation: fadeUp .55s cubic-bezier(.22,.68,0,1.1) forwards; }
+
+    /* ── navbar ──────────────────────────────── */
+    .navbar {
+      position: sticky;
+      top: 0; z-index: 100;
+      background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      animation: fadeIn .4s ease both;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .logo-icon {
+      width: 32px; height: 32px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 2px 8px rgba(79,110,247,.3);
+    }
+
+    .logo-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -.3px;
+      color: var(--text-1);
+    }
+    .logo-text span { color: var(--accent); }
+
+    .search-bar {
+      flex: 1;
+      max-width: 480px;
+      position: relative;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 9px 16px 9px 38px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-size: .875rem;
+      font-family: inherit;
+      background: #f8f9fd;
+      color: var(--text-1);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .search-bar input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(79,110,247,.11);
+      background: #fff;
+    }
+
+    .search-bar svg {
+      position: absolute;
+      left: 11px; top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      pointer-events: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: auto;
+    }
+
+    .nav-link {
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--text-2);
+      text-decoration: none;
+      transition: background .15s, color .15s;
+    }
+    .nav-link:hover { background: var(--accent-soft); color: var(--accent); }
+
+    .cart-btn {
+      position: relative;
+      width: 36px; height: 36px;
+      background: none;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: var(--text-2);
+      transition: border-color .15s, color .15s, background .15s;
+    }
+    .cart-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+    .cart-badge {
+      position: absolute;
+      top: -5px; right: -5px;
+      width: 16px; height: 16px;
+      background: var(--red);
+      border-radius: 50%;
+      font-size: .62rem;
+      font-weight: 700;
+      color: #fff;
+      display: grid;
+      place-items: center;
+    }
+    .cart-badge.pop { animation: pop .35s ease; }
+
+    /* ── breadcrumb ──────────────────────────── */
+    .breadcrumb {
+      margin: 20px 40px 0;
+      font-size: .8rem;
+      color: var(--text-2);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      animation: fadeIn .4s ease both;
+    }
+    .breadcrumb a { color: var(--text-2); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent); }
+    .breadcrumb .current { color: var(--text-1); font-weight: 600; }
+
+    /* ── section ─────────────────────────────── */
+    .section { margin: 0 40px 32px; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -.2px;
+    }
+
+    .section-link {
+      font-size: .83rem;
+      color: var(--accent);
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .section-link:hover { text-decoration: underline; }
+
+    /* ── product main ────────────────────────── */
+    .product-main {
+      margin: 20px 40px 0;
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 32px;
+    }
+
+    .gallery-main {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .gallery-main .product-badge {
+      position: absolute; top: 14px; left: 14px;
+      padding: 4px 10px; border-radius: 6px;
+      font-size: .72rem; font-weight: 700;
+    }
+    .badge-new  { background: #dcfce7; color: #15803d; }
+    .badge-sale { background: #fee2e2; color: #b91c1c; }
+    .badge-hot  { background: #fef9c3; color: #a16207; }
+
+    .gallery-main .gallery-icon { animation: float 3.2s ease-in-out infinite; }
+
+    .gallery-thumbs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .thumb {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      height: 76px;
+      display: grid;
+      place-items: center;
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: border-color .15s, transform .15s;
+    }
+    .thumb:hover { transform: translateY(-2px); }
+    .thumb.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,110,247,.12); }
+
+    .product-info-category {
+      font-size: .75rem;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 8px;
+    }
+
+    .product-info h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -.4px;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+
+    .info-rating {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .85rem;
+      color: var(--text-2);
+      margin-bottom: 18px;
+    }
+    .stars { color: #f59e0b; letter-spacing: 1px; }
+    .info-rating a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .info-rating a:hover { text-decoration: underline; }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+    .price-now { font-size: 2rem; font-weight: 800; letter-spacing: -.5px; }
+    .price-old { font-size: 1.05rem; color: var(--text-2); text-decoration: line-through; }
+    .price-discount {
+      background: #fee2e2; color: #b91c1c;
+      font-size: .75rem; font-weight: 700;
+      padding: 3px 8px; border-radius: 6px;
+    }
+    .price-note { font-size: .78rem; color: var(--text-2); margin-bottom: 22px; }
+
+    .feature-list {
+      list-style: none;
+      margin-bottom: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .feature-list li {
+      font-size: .87rem;
+      color: var(--text-1);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .feature-list li::before {
+      content: '✓';
+      color: var(--green);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
+
+    .option-label {
+      font-size: .82rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .option-label .selected-value { color: var(--text-2); font-weight: 500; }
+
+    .swatches { display: flex; gap: 10px; margin-bottom: 22px; }
+    .swatch {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      position: relative;
+      display: grid;
+      place-items: center;
+      transition: transform .15s, border-color .15s;
+      box-shadow: 0 0 0 1px var(--border);
+    }
+    .swatch:hover { transform: translateY(-2px); }
+    .swatch.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); }
+    .swatch.active::after {
+      content: '✓'; color: #fff; font-size: .75rem; font-weight: 800;
+      text-shadow: 0 1px 2px rgba(0,0,0,.4);
+    }
+    .swatch.light.active::after { color: #111; text-shadow: none; }
+
+    .buy-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .qty-control button {
+      width: 36px; height: 42px;
+      background: #f8f9fd;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-1);
+      transition: background .15s;
+    }
+    .qty-control button:hover { background: var(--accent-soft); color: var(--accent); }
+    .qty-control span {
+      width: 40px;
+      text-align: center;
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    .add-to-cart-btn {
+      flex: 1;
+      height: 44px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      font-size: .9rem;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background .2s, transform .1s;
+      box-shadow: 0 4px 14px rgba(79,110,247,.28);
+    }
+    .add-to-cart-btn:hover { background: var(--accent-h); }
+    .add-to-cart-btn:active { transform: scale(.98); }
+    .add-to-cart-btn.added { background: var(--green); }
+
+    .wishlist-toggle {
+      width: 44px; height: 44px;
+      flex-shrink: 0;
+      background: #fff;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: var(--text-2);
+      font-size: 1.1rem;
+      transition: color .2s, border-color .2s;
+    }
+    .wishlist-toggle:hover { border-color: var(--red); color: var(--red); }
+    .wishlist-toggle.active { color: var(--red); border-color: var(--red); }
+
+    .stock-line {
+      font-size: .82rem;
+      color: var(--green);
+      font-weight: 600;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trust-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .trust-item {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+      font-size: .72rem;
+      color: var(--text-2);
+      font-weight: 500;
+      background: #f8f9fd;
+    }
+    .trust-item .ti-icon { font-size: 1.1rem; display: block; margin-bottom: 4px; }
+
+    /* ── tabs ─────────────────────────────────── */
+    .tabs-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .tabs-nav {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+    }
+    .tab-btn {
+      padding: 16px 24px;
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: .87rem;
+      font-weight: 600;
+      color: var(--text-2);
+      cursor: pointer;
+      position: relative;
+      transition: color .15s;
+    }
+    .tab-btn:hover { color: var(--text-1); }
+    .tab-btn.active { color: var(--accent); }
+    .tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    .tab-panel { display: none; padding: 28px 32px; }
+    .tab-panel.active { display: block; }
+
+    .tab-panel p { font-size: .88rem; line-height: 1.7; color: var(--text-1); margin-bottom: 14px; max-width: 640px; }
+    .tab-panel ul { list-style: none; max-width: 640px; }
+    .tab-panel ul li {
+      font-size: .86rem; color: var(--text-1);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex; gap: 8px;
+    }
+    .tab-panel ul li::before { content: '—'; color: var(--accent); flex-shrink: 0; }
+
+    .spec-table { width: 100%; max-width: 560px; border-collapse: collapse; }
+    .spec-table tr { border-bottom: 1px solid var(--border); }
+    .spec-table tr:last-child { border-bottom: none; }
+    .spec-table td { padding: 11px 4px; font-size: .85rem; }
+    .spec-table td:first-child { color: var(--text-2); font-weight: 500; width: 200px; }
+    .spec-table td:last-child { color: var(--text-1); font-weight: 600; }
+
+    .review-summary {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+    .review-score { text-align: center; }
+    .review-score .big-num { font-size: 2.6rem; font-weight: 800; letter-spacing: -1px; }
+    .review-score .stars { font-size: 1rem; display: block; margin: 4px 0; }
+    .review-score .count { font-size: .78rem; color: var(--text-2); }
+
+    .review-bars { flex: 1; min-width: 220px; max-width: 360px; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+    .review-bar-row { display: flex; align-items: center; gap: 8px; font-size: .76rem; color: var(--text-2); }
+    .review-bar-row .label { width: 32px; flex-shrink: 0; }
+    .review-bar-track { flex: 1; height: 6px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .review-bar-fill { height: 100%; background: #f59e0b; border-radius: 4px; }
+    .review-bar-row .pct { width: 32px; text-align: right; flex-shrink: 0; }
+
+    .review-card {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border);
+      max-width: 640px;
+    }
+    .review-card:last-child { border-bottom: none; }
+    .review-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .review-name { font-size: .87rem; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .verified-tag { font-size: .68rem; color: var(--green); font-weight: 600; background: #dcfce7; padding: 2px 6px; border-radius: 5px; }
+    .review-date { font-size: .76rem; color: var(--text-2); }
+    .review-card .stars { display: block; margin-bottom: 8px; font-size: .85rem; }
+    .review-card p { font-size: .85rem; color: var(--text-1); line-height: 1.6; max-width: 100%; margin: 0; }
+
+    /* ── related products (reuses product-card pattern) ── */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .2s, box-shadow .2s;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--text-1);
+      display: block;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 30px rgba(79,110,247,.14);
+    }
+
+    .product-img {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      background: linear-gradient(135deg, #f8f9fd, #eef1ff);
+      position: relative;
+    }
+
+    .product-badge.card-badge { top: 10px; left: 10px; }
+
+    .wishlist-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      width: 30px; height: 30px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: var(--text-2);
+      transition: color .2s, border-color .2s;
+      font-size: .9rem;
+    }
+    .wishlist-btn:hover, .wishlist-btn.active { color: var(--red); border-color: var(--red); }
+
+    .product-body { padding: 14px 16px; }
+
+    .product-category {
+      font-size: .72rem;
+      color: var(--accent);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      margin-bottom: 4px;
+    }
+
+    .product-name {
+      font-size: .88rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .product-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 10px;
+      font-size: .75rem;
+      color: var(--text-2);
+    }
+
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .price { font-size: 1rem; font-weight: 700; color: var(--text-1); }
+    .price-wrap .price-old { font-size: .78rem; color: var(--text-2); text-decoration: line-through; margin-left: 4px; }
+
+    .add-btn {
+      width: 32px; height: 32px;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      transition: background .2s, transform .15s;
+      box-shadow: 0 2px 8px rgba(79,110,247,.25);
+    }
+    .add-btn:hover { background: var(--accent-h); transform: scale(1.08); }
+
+    /* ── footer ──────────────────────────────── */
+    .footer {
+      margin-top: 40px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 32px;
+    }
+
+    .footer-brand .logo-text { font-size: 1.2rem; margin-bottom: 8px; display: block; }
+    .footer-brand p { font-size: .83rem; color: var(--text-2); line-height: 1.6; max-width: 240px; }
+
+    .footer-col h4 { font-size: .83rem; font-weight: 700; margin-bottom: 12px; }
+    .footer-col a {
+      display: block;
+      font-size: .8rem;
+      color: var(--text-2);
+      text-decoration: none;
+      margin-bottom: 7px;
+      transition: color .15s;
+    }
+    .footer-col a:hover { color: var(--accent); }
+
+    .footer-bottom {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: .78rem;
+      color: var(--text-2);
+    }
+
+    /* ── responsive (kept minimal, same visual language) ── */
+    @media (max-width: 980px) {
+      .product-main { grid-template-columns: 1fr; }
+      .products-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer { grid-template-columns: 1fr 1fr; }
+      .review-summary { gap: 24px; }
+    }
+    @media (max-width: 600px) {
+      .navbar { padding: 0 16px; gap: 12px; }
+      .search-bar { display: none; }
+      .section, .product-main, .breadcrumb { margin-left: 16px; margin-right: 16px; }
+      .footer, .footer-bottom { padding-left: 16px; padding-right: 16px; }
+      .footer { grid-template-columns: 1fr; }
+      .products-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+      </div>
+      <span class="logo-text">X<span>kart</span></span>
+    </a>
+
+    <div class="search-bar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search products, brands and more..."/>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="products.html" class="nav-link">Products</a>
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+      <a href="login.html" class="nav-link">Sign in</a>
+      <button class="cart-btn" title="Cart" id="cartBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-badge" id="cartBadge">2</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ── Breadcrumb ── -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a> / <a href="products.html">Electronics</a> / <a href="products.html">Headphones</a> / <span class="current">Sony WH-1000XM5</span>
+  </div>
+
+  <!-- ── Product main ── -->
+  <div class="product-main">
+    <div class="gallery anim">
+      <div class="gallery-main">
+        <span class="product-badge badge-hot">🔥 Hot</span>
+        <span class="gallery-icon" id="mainImg">🎧</span>
+      </div>
+      <div class="gallery-thumbs">
+        <div class="thumb active" data-img="🎧">🎧</div>
+        <div class="thumb" data-img="📦">📦</div>
+        <div class="thumb" data-img="🔌">🔌</div>
+        <div class="thumb" data-img="🎵">🎵</div>
+      </div>
+    </div>
+
+    <div class="product-info anim" style="animation-delay:.08s">
+      <div class="product-info-category">Electronics · Headphones</div>
+      <h1>Sony WH-1000XM5 Wireless Noise-Cancelling Headphones</h1>
+
+      <div class="info-rating">
+        <span class="stars">★★★★★</span>
+        <span>4.9</span>
+        <a href="#reviews">2,134 ratings</a>
+        <span>·</span>
+        <a href="#reviews">412 answered questions</a>
+      </div>
+
+      <div class="price-row">
+        <span class="price-now">$299</span>
+        <span class="price-old">$380</span>
+        <span class="price-discount">-21%</span>
+      </div>
+      <div class="price-note">Inclusive of all taxes · Free delivery on this item</div>
+
+      <ul class="feature-list">
+        <li>Industry-leading adaptive noise cancellation</li>
+        <li>Up to 30 hours of battery life on a single charge</li>
+        <li>Multipoint connection — pair with two devices at once</li>
+        <li>Crystal-clear hands-free calling with precise voice pickup</li>
+      </ul>
+
+      <div class="divider"></div>
+
+      <div class="option-label">Colour: <span class="selected-value" id="colorLabel">Midnight Black</span></div>
+      <div class="swatches">
+        <div class="swatch active" data-color="Midnight Black" style="background:#1a1a1a;"></div>
+        <div class="swatch light" data-color="Platinum Silver" style="background:#cbd2db;"></div>
+        <div class="swatch" data-color="Ocean Blue" style="background:#3a57e8;"></div>
+      </div>
+
+      <div class="buy-row">
+        <div class="qty-control">
+          <button id="qtyMinus" aria-label="Decrease quantity">−</button>
+          <span id="qtyValue">1</span>
+          <button id="qtyPlus" aria-label="Increase quantity">+</button>
+        </div>
+        <button class="add-to-cart-btn" id="addToCartBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span id="addToCartLabel">Add to Cart</span>
+        </button>
+        <button class="wishlist-toggle" id="wishlistToggle" title="Add to wishlist">♡</button>
+      </div>
+
+      <div class="stock-line">✓ In stock — ships within 24 hours</div>
+
+      <div class="trust-row">
+        <div class="trust-item"><span class="ti-icon">🚚</span>Free shipping over $50</div>
+        <div class="trust-item"><span class="ti-icon">🔄</span>30-day easy returns</div>
+        <div class="trust-item"><span class="ti-icon">🔒</span>Secure checkout</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tabs: Description / Specs / Reviews ── -->
+  <div class="section" style="margin-top:32px;" id="reviews">
+    <div class="tabs-card anim">
+      <div class="tabs-nav">
+        <button class="tab-btn active" data-tab="desc">Description</button>
+        <button class="tab-btn" data-tab="specs">Specifications</button>
+        <button class="tab-btn" data-tab="reviews">Reviews (2,134)</button>
+      </div>
+
+      <div class="tab-panel active" id="desc">
+        <p>The WH-1000XM5 builds on a decade of noise-cancelling expertise with two processors and eight microphones working together to read and block out the world around you, whether you're on a flight, in an open office, or commuting through a noisy city.</p>
+        <p>A redesigned driver unit reproduces a wider range of frequencies for richer detail across vocals and instruments, while soft-fit leather-style ear cushions distribute pressure evenly for comfortable all-day listening.</p>
+        <ul>
+          <li>Adaptive Sound Control adjusts noise cancellation automatically based on your location and activity</li>
+          <li>Speak-to-Chat pauses playback automatically when you start talking</li>
+          <li>Quick Attention mode lets you turn down the volume and hear your surroundings with one touch</li>
+          <li>Foldable, compact design with a carrying case included</li>
+        </ul>
+      </div>
+
+      <div class="tab-panel" id="specs">
+        <table class="spec-table">
+          <tr><td>Driver size</td><td>30mm</td></tr>
+          <tr><td>Battery life</td><td>Up to 30 hours (NC on)</td></tr>
+          <tr><td>Charging</td><td>USB-C, 3 min charge = 3 hrs playback</td></tr>
+          <tr><td>Bluetooth version</td><td>5.2, Multipoint supported</td></tr>
+          <tr><td>Noise cancellation</td><td>Adaptive NC Optimizer, dual processor</td></tr>
+          <tr><td>Weight</td><td>250g</td></tr>
+          <tr><td>Warranty</td><td>1 year limited manufacturer warranty</td></tr>
+        </table>
+      </div>
+
+      <div class="tab-panel" id="reviewsPanel">
+        <div class="review-summary">
+          <div class="review-score">
+            <div class="big-num">4.9</div>
+            <span class="stars">★★★★★</span>
+            <div class="count">2,134 ratings</div>
+          </div>
+          <div class="review-bars">
+            <div class="review-bar-row"><span class="label">5 ★</span><div class="review-bar-track"><div class="review-bar-fill" style="width:78%"></div></div><span class="pct">78%</span></div>
+            <div class="review-bar-row"><span class="label">4 ★</span><div class="review-bar-track"><div class="review-bar-fill" style="width:15%"></div></div><span class="pct">15%</span></div>
+            <div class="review-bar-row"><span class="label">3 ★</span><div class="review-bar-track"><div class="review-bar-fill" style="width:4%"></div></div><span class="pct">4%</span></div>
+            <div class="review-bar-row"><span class="label">2 ★</span><div class="review-bar-track"><div class="review-bar-fill" style="width:2%"></div></div><span class="pct">2%</span></div>
+            <div class="review-bar-row"><span class="label">1 ★</span><div class="review-bar-track"><div class="review-bar-fill" style="width:1%"></div></div><span class="pct">1%</span></div>
+          </div>
+        </div>
+
+        <div class="review-card">
+          <div class="review-head">
+            <span class="review-name">Aamir K. <span class="verified-tag">Verified Purchase</span></span>
+            <span class="review-date">May 14, 2026</span>
+          </div>
+          <span class="stars">★★★★★</span>
+          <p>Noise cancellation is on another level — I use these on the daily commute and can barely hear traffic. Battery genuinely lasts the week for my use.</p>
+        </div>
+        <div class="review-card">
+          <div class="review-head">
+            <span class="review-name">Priya S. <span class="verified-tag">Verified Purchase</span></span>
+            <span class="review-date">April 29, 2026</span>
+          </div>
+          <span class="stars">★★★★★</span>
+          <p>Comfortable enough for long flights and the call quality impressed everyone on the other end. Worth the upgrade from my older pair.</p>
+        </div>
+        <div class="review-card">
+          <div class="review-head">
+            <span class="review-name">Daniel R. <span class="verified-tag">Verified Purchase</span></span>
+            <span class="review-date">April 3, 2026</span>
+          </div>
+          <span class="stars">★★★★☆</span>
+          <p>Sound quality is excellent and setup was instant. Only wish the carrying case was a little slimmer for travel.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Related products (same component as homepage) ── -->
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title anim">You might also like</h2>
+      <a href="products.html" class="section-link">View all</a>
+    </div>
+    <div class="products-grid">
+
+      <a href="product.html" class="product-card anim" style="animation-delay:.05s">
+        <div class="product-img">
+          🎵
+          <span class="product-badge card-badge badge-new">✨ New</span>
+          <button class="wishlist-btn">♡</button>
+        </div>
+        <div class="product-body">
+          <div class="product-category">Electronics</div>
+          <div class="product-name">Bose QuietComfort Earbuds II</div>
+          <div class="product-rating"><span class="stars">★★★★★</span> 4.8 (1.2k)</div>
+          <div class="product-footer">
+            <div class="price-wrap">
+              <span class="price">$219</span>
+              <span class="price-old">$279</span>
+            </div>
+            <button class="add-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+      <a href="product.html" class="product-card anim" style="animation-delay:.1s">
+        <div class="product-img">
+          👟
+          <button class="wishlist-btn">♡</button>
+        </div>
+        <div class="product-body">
+          <div class="product-category">Footwear</div>
+          <div class="product-name">Nike Air Max 270 Running</div>
+          <div class="product-rating"><span class="stars">★★★★★</span> 4.8 (1.4k)</div>
+          <div class="product-footer">
+            <div class="price-wrap">
+              <span class="price">$149</span>
+              <span class="price-old">$190</span>
+            </div>
+            <button class="add-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+      <a href="product.html" class="product-card anim" style="animation-delay:.15s">
+        <div class="product-img">
+          ⌚
+          <span class="product-badge card-badge badge-sale">🏷 Sale</span>
+          <button class="wishlist-btn">♡</button>
+        </div>
+        <div class="product-body">
+          <div class="product-category">Electronics</div>
+          <div class="product-name">Apple Watch SE 2nd Gen</div>
+          <div class="product-rating"><span class="stars">★★★★☆</span> 4.7 (890)</div>
+          <div class="product-footer">
+            <div class="price-wrap">
+              <span class="price">$249</span>
+              <span class="price-old">$299</span>
+            </div>
+            <button class="add-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+      <a href="product.html" class="product-card anim" style="animation-delay:.2s">
+        <div class="product-img">
+          👜
+          <button class="wishlist-btn">♡</button>
+        </div>
+        <div class="product-body">
+          <div class="product-category">Fashion</div>
+          <div class="product-name">Premium Leather Handbag</div>
+          <div class="product-rating"><span class="stars">★★★★★</span> 4.9 (560)</div>
+          <div class="product-footer">
+            <div class="price-wrap">
+              <span class="price">$189</span>
+            </div>
+            <button class="add-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <span class="logo-text">X<span style="color:var(--accent)">kart</span></span>
+      <p>Your one-stop shop for everything you need. Quality products, fast delivery, best prices.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#">About Us</a>
+      <a href="#">Careers</a>
+      <a href="#">Press</a>
+      <a href="#">Blog</a>
+    </div>
+    <div class="footer-col">
+      <h4>Support</h4>
+      <a href="#">Help Center</a>
+      <a href="#">Returns</a>
+      <a href="#">Track Order</a>
+      <a href="#">Contact Us</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Cookie Policy</a>
+    </div>
+  </footer>
+  <div class="footer-bottom">
+    <span>© 2026 Xkart. All rights reserved.</span>
+    <span>Built with ❤️ for DevOps practice</span>
+  </div>
+
+  <script>
+    // Scroll animation observer (same as homepage)
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+
+    // Gallery thumbnails
+    const mainImg = document.getElementById('mainImg');
+    document.querySelectorAll('.thumb').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        document.querySelectorAll('.thumb').forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+        mainImg.textContent = thumb.dataset.img;
+      });
+    });
+
+    // Colour swatches
+    const colorLabel = document.getElementById('colorLabel');
+    document.querySelectorAll('.swatch').forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+        swatch.classList.add('active');
+        colorLabel.textContent = swatch.dataset.color;
+      });
+    });
+
+    // Quantity control
+    const qtyValue = document.getElementById('qtyValue');
+    let qty = 1;
+    document.getElementById('qtyPlus').addEventListener('click', () => {
+      if (qty < 10) { qty++; qtyValue.textContent = qty; }
+    });
+    document.getElementById('qtyMinus').addEventListener('click', () => {
+      if (qty > 1) { qty--; qtyValue.textContent = qty; }
+    });
+
+    // Add to cart
+    const cartBadge = document.getElementById('cartBadge');
+    const addBtn = document.getElementById('addToCartBtn');
+    const addLabel = document.getElementById('addToCartLabel');
+    let cartCount = parseInt(cartBadge.textContent, 10);
+
+    addBtn.addEventListener('click', () => {
+      cartCount += qty;
+      cartBadge.textContent = cartCount;
+      cartBadge.classList.remove('pop');
+      requestAnimationFrame(() => cartBadge.classList.add('pop'));
+
+      addBtn.classList.add('added');
+      addLabel.textContent = 'Added ✓';
+      setTimeout(() => {
+        addBtn.classList.remove('added');
+        addLabel.textContent = 'Add to Cart';
+      }, 1300);
+    });
+
+    // Wishlist toggle (main product + related cards)
+    document.querySelectorAll('.wishlist-toggle, .wishlist-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const active = btn.classList.toggle('active');
+        btn.textContent = active ? '♥' : '♡';
+      });
+    });
+
+    // Tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        const target = btn.dataset.tab === 'reviews' ? 'reviewsPanel' : btn.dataset.tab;
+        document.getElementById(target).classList.add('active');
+      });
+    });
+  </script>
+
+  <!-- footer or other content -->
+
+  <script>
+  document.querySelector(".cart-btn").addEventListener("click", function () {
+    window.location.href = "cart.html";
+  });
+  </script>
+
+</body>
+</html>
+
+</body>
+</html>
