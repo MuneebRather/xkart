@@ -33,7 +33,7 @@ and growing into a fully containerized, cloud-deployed application.
 - [x] Homepage completed
 - [x] Product page
 - [x] Cart page
-- [ ] Profile page
+- [x] Profile page
 - [ ] Settings page
 - [ ] 404 page
 
