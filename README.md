@@ -32,7 +32,7 @@ and growing into a fully containerized, cloud-deployed application.
 - [x] Dashboard page completed
 - [x] Homepage completed
 - [x] Product page
-- [ ] Cart page
+- [x] Cart page
 - [ ] Profile page
 - [ ] Settings page
 - [ ] 404 page
