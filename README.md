@@ -10,12 +10,12 @@ It is built level by level, starting from a static frontend
 and growing into a fully containerized, cloud-deployed application.
 
 ## Tech Stack
-- HTML/CSS (Level 1) 
+- HTML/CSS (Level 1) ✅
 - Python + Flask (Level 2)
 - Docker + Nginx (Level 3)
 
 ## Levels
-### Level 1 - Static Frontend (in progress)
+### Level 1 - Static Frontend (Completed)✅
 - Login Page
 - Dashboard Page
 - Homepage
@@ -41,7 +41,7 @@ and growing into a fully containerized, cloud-deployed application.
 
 ## Progress
 
-### Level 1 - Static Frontend 
+### Level 1 - Static Frontend ✅
 - [x] Login page completed
 - [x] Dashboard page completed
 - [x] Homepage completed
@@ -50,7 +50,10 @@ and growing into a fully containerized, cloud-deployed application.
 - [x] Profile page
 - [x] Settings page
 - [x] 404 page
-- [ ] All pages linked together
+- [x] All pages linked together
+
+Built a complete static e-commerce frontend using HTML and CSS.
+All pages are fully linked and hosted locally in the browser.
 
 ## Author
 Muneeb Rather
