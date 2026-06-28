@@ -58,7 +58,7 @@ All pages are fully linked and hosted locally in the browser.
 
 ### Level 2 - Python Flask Backend (In Progress)
 - [x] Flask app setup completed
-- [ ] User authentication
+- [x] User authentication completed
 - [ ] Database integration
 - [ ] REST APIs
 
