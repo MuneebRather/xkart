@@ -24,6 +24,7 @@ and growing into a fully containerized, cloud-deployed application.
 - Profile Page
 - Settings Page
 - 404 Page
+- Register Page
 - All pages linked together
 
 ### Level 2 - Python Flask Backend (In Progress)
@@ -49,6 +50,7 @@ and growing into a fully containerized, cloud-deployed application.
 - [x] Profile page completed
 - [x] Settings page completed
 - [x] 404 page completed
+- [x] Register page completed
 - [x] All pages linked together
 
 Built a complete static e-commerce frontend using HTML and CSS.
