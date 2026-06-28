@@ -1,29 +1,29 @@
 # Xkart 🛒
 
-A fully functional shopping platform built to demonstrate 
+A fully functional e-commerce platform built to demonstrate 
 real-world DevOps deployment practices.
 
 ## Project Overview
 Xkart is an e-commerce web application that serves as the 
-test application for the Exploy deployment platform. 
+sample application for the Exploy deployment platform. 
 It is built level by level, starting from a static frontend 
 and growing into a fully containerized, cloud-deployed application.
 
-## Tech Stack (grows with each level)
+## Tech Stack
 - HTML/CSS (Level 1)
-- Python Flask (Level 2)
-- Docker (Level 3)
+- Python + Flask (Level 2)
+- Docker + Nginx (Level 3)
 
 ## Levels
 ### Level 1 - Static Frontend
-- Login page
-- Dashboard page
+- Login Page
+- Dashboard Page
 - Homepage
-- Product page
-- Cart page
-- Profile page
-- Settings page
-- 404 page
+- Product Page
+- Cart Page
+- Profile Page
+- Settings Page
+- 404 Page
 
 ## Progress
 
