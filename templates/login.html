@@ -255,6 +255,16 @@
     .form-group.invalid .error-msg { display: block; }
     .form-group.invalid input      { border-color: var(--error); }
 
+    .server-banner {
+      font-size: .82rem;
+      padding: 10px 12px;
+      border-radius: 9px;
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .server-banner.error   { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .server-banner.success { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+
     @media (prefers-reduced-motion: reduce) {
       .card { animation: none; opacity: 1; transform: none; }
     }
@@ -279,7 +289,16 @@
     <h1 class="card-title">Welcome back</h1>
     <p class="card-sub">Sign in to continue shopping.</p>
 
-    <form id="loginForm" novalidate>
+    {% if registered %}
+    <div class="server-banner success">Account created — sign in to continue.</div>
+    {% endif %}
+    {% if error %}
+    <div class="server-banner error">{{ error }}</div>
+    {% endif %}
+
+    <form id="loginForm" novalidate method="POST" action="{{ url_for('login') }}">
+
+      {% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}
 
       <div class="form-group" id="emailGroup">
         <label for="email">Email</label>
@@ -288,7 +307,7 @@
             <rect x="2" y="4" width="20" height="16" rx="2"/>
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
           </svg>
-          <input type="email" id="email" placeholder="you@example.com" autocomplete="email"/>
+          <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email"/>
         </div>
         <span class="error-msg">Please enter a valid email.</span>
       </div>
@@ -300,7 +319,7 @@
             <rect x="3" y="11" width="18" height="11" rx="2"/>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
           </svg>
-          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
+          <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password"/>
           <button type="button" class="toggle-pw" aria-label="Toggle password">
             <svg id="eyeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/>
@@ -365,7 +384,7 @@
   });
 
   document.getElementById('loginForm').addEventListener('submit', e => {
-    e.preventDefault();
+    
     const email = document.getElementById('email');
     const pass  = document.getElementById('password');
     const eGrp  = document.getElementById('emailGroup');
@@ -380,14 +399,10 @@
       pGrp.classList.add('invalid'); ok = false;
     } else pGrp.classList.remove('invalid');
 
-    if (!ok) return;
+    if (!ok) { e.preventDefault(); return; }
 
-    const btn = document.getElementById('signInBtn');
-    btn.classList.add('loading');
-    setTimeout(() => {
-      btn.classList.remove('loading');
-      window.location.href = "{{ url_for('dashboard') }}";
-    }, 1800);
+    // valid: show spinner and let the form submit normally to Flask
+    document.getElementById('signInBtn').classList.add('loading');
   });
 
   document.getElementById('email').addEventListener('input', () =>
