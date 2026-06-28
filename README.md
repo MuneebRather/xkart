@@ -26,18 +26,17 @@ and growing into a fully containerized, cloud-deployed application.
 - 404 Page
 - All pages linked together
 
-### Level 2 - Python Flask Backend (in progress)
+### Level 2 - Python Flask Backend (In Progress)
 - Backend development with Flask
 - User authentication and sessions
 - Database integration
 - REST APIs for products and cart
 
-### Level 3 - Docker (coming soon)
+### Level 3 - Docker (Coming Soon)
 - Write Dockerfile manually
 - Build and run Docker image locally
 - Test Xkart in browser via Docker
 - Nginx inside container
--
 
 ## Progress
 
@@ -45,28 +44,26 @@ and growing into a fully containerized, cloud-deployed application.
 - [x] Login page completed
 - [x] Dashboard page completed
 - [x] Homepage completed
-- [x] Product page
-- [x] Cart page
-- [x] Profile page
-- [x] Settings page
-- [x] 404 page
+- [x] Product page completed
+- [x] Cart page completed
+- [x] Profile page completed
+- [x] Settings page completed
+- [x] 404 page completed
 - [x] All pages linked together
 
 Built a complete static e-commerce frontend using HTML and CSS.
 All pages are fully linked and hosted locally in the browser.
 
-### Level 2 - Python Flask Backend (in progress)
+### Level 2 - Python Flask Backend (In Progress)
 - [ ] Flask app setup
 - [ ] User authentication
 - [ ] Database integration
 - [ ] REST APIs
 
-### Level 3 - Docker (coming soon)
+### Level 3 - Docker (Coming Soon)
 
 ## About This Project
-This project is part of my DevOps learning journey.
-The frontend HTML and CSS was built with AI assistance
-to accelerate UI development. All backend, Docker work is done manually by me.
+The frontend (HTML & CSS) was built with AI assistance to accelerate UI development. The backend, Docker, and infrastructure are implemented manually by me as part of my DevOps learning journey. AI is used as a learning and guidance tool throughout the development process.
 
 ## Author
 Muneeb Rather
