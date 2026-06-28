@@ -55,7 +55,7 @@ Built a complete static e-commerce frontend using HTML and CSS.
 All pages are fully linked and hosted locally in the browser.
 
 ### Level 2 - Python Flask Backend (In Progress)
-- [ ] Flask app setup
+- [x] Flask app setup completed
 - [ ] User authentication
 - [ ] Database integration
 - [ ] REST APIs
