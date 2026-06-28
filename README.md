@@ -26,7 +26,7 @@ and growing into a fully containerized, cloud-deployed application.
 - 404 Page
 - All pages linked together
 
-### Level 2 - Python Flask Backend (coming soon)
+### Level 2 - Python Flask Backend (in progress)
 - Backend development with Flask
 - User authentication and sessions
 - Database integration
@@ -54,6 +54,19 @@ and growing into a fully containerized, cloud-deployed application.
 
 Built a complete static e-commerce frontend using HTML and CSS.
 All pages are fully linked and hosted locally in the browser.
+
+### Level 2 - Python Flask Backend (in progress)
+- [ ] Flask app setup
+- [ ] User authentication
+- [ ] Database integration
+- [ ] REST APIs
+
+### Level 3 - Docker (coming soon)
+
+## About This Project
+This project is part of my DevOps learning journey.
+The frontend HTML and CSS was built with AI assistance
+to accelerate UI development. All backend, Docker work is done manually by me.
 
 ## Author
 Muneeb Rather
