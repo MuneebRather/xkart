@@ -1,34 +1,29 @@
-import json
+
 import os
+
 from functools import wraps
 
 from flask import Flask, render_template, request, redirect, url_for, session
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.secret_key = 'xkart-secret-key-2026'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///xkart.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Needed for Flask sessions to work (cookie signing).
-# For a real deployed app, set this from an environment variable instead.
-app.secret_key = 'dev-secret-key-change-this'
+db = SQLAlchemy(app)
 
-USERS_FILE = 'users.json'
+# ── Models ────────────────────────────────────
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
 
-
-def load_users():
-    if os.path.exists(USERS_FILE):
-        with open(USERS_FILE, 'r') as f:
-            return json.load(f)
-    return {}
-
-
-def save_users(users):
-    with open(USERS_FILE, 'w') as f:
-        json.dump(users, f, indent=2)
-
-
+# ── Auth decorator ────────────────────────────
 def login_required(view_func):
-    """Redirect to /login if there's no active session, remembering
-    which page the user was trying to reach."""
+   
     @wraps(view_func)
     def wrapped(*args, **kwargs):
         if 'user_email' not in session:
@@ -36,10 +31,11 @@ def login_required(view_func):
         return view_func(*args, **kwargs)
     return wrapped
 
-
+# ── Routes ────────────────────────────────────
 @app.route('/')
+
 def root():
-    # Public homepage — browsing doesn't require login, just like a real store.
+   
     return render_template('index.html')
 
 @app.route('/home')
@@ -55,14 +51,14 @@ def login():
     if request.method == 'POST':
         email = request.form.get('email', '').strip().lower()
         password = request.form.get('password', '')
+        try:
+            user = User.query.filter_by(email=email).first()
+        except Exception:
+            user = None
 
-        users = load_users()
-        user = users.get(email)
-
-        if user and check_password_hash(user['password'], password):
+        if user and check_password_hash(user.password, password):
             session['user_email'] = email
-            session['user_name'] = user['name']
-            # Only follow 'next' if it's a safe local path (avoids open redirects)
+            session['user_name'] = user.name
             if next_url and next_url.startswith('/'):
                 return redirect(next_url)
             return redirect(url_for('dashboard'))
@@ -70,8 +66,8 @@ def login():
         error = 'Invalid email or password.'
 
     registered = request.args.get('registered')
-    return render_template('login.html', error=error, registered=registered, next=next_url)
-
+    return render_template('login.html', error=error,
+                           registered=registered, next=next_url)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -83,7 +79,7 @@ def register():
         confirm = request.form.get('confirm', '')
         terms = request.form.get('terms')
 
-        users = load_users()
+
 
         if not name or not email or not password:
             error = 'Please fill in all fields.'
@@ -91,15 +87,20 @@ def register():
             error = "Passwords don't match."
         elif not terms:
             error = 'You must accept the terms to continue.'
-        elif email in users:
-            error = 'An account with this email already exists.'
+        
         else:
-            users[email] = {
-                'name': name,
-                'password': generate_password_hash(password),
-            }
-            save_users(users)
-            return redirect(url_for('login', registered=1))
+            existing = User.query.filter_by(email=email).first()
+            if existing:
+                error = 'An account with this email already exists.'
+            else:
+                new_user = User(
+                    name=name,
+                    email=email,
+                    password=generate_password_hash(password)
+                )
+                db.session.add(new_user)
+                db.session.commit()
+                return redirect(url_for('login', registered=1))
 
     return render_template('register.html', error=error)
 
@@ -144,6 +145,9 @@ def settings():
 def page_not_found(e):
     return render_template('404.html'), 404
 
+# ── Create DB tables ──────────────────────────
+with app.app_context():
+    db.create_all()
 
 if __name__ == '__main__':
     app.run(debug=True)
