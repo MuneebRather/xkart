@@ -65,10 +65,10 @@ All pages are fully linked and hosted locally in the browser.
 Built a fully functional Python Flask backend with SQLite database, user authentication, sessions, password hashing and REST APIs for product and cart.
 
 ### Level 3 - Docker (In Progress)
-- [ ] Write Dockerfile manually
-- [ ] Build Docker image locally
-- [ ] Run Xkart in Docker container
-- [ ] Test in browser via Docker
+- [x] Write Dockerfile manually
+- [x] Build Docker image
+- [x] Run Xkart in Docker container
+- [x] Test in browser via Docker
 - [ ] Add Nginx inside container
 
 ## About This Project
