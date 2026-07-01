@@ -33,7 +33,7 @@ and growing into a fully containerized, cloud-deployed application.
 - Database integration
 - REST APIs for products and cart
 
-### Level 3 - Docker (Coming Soon)
+### Level 3 - Docker (In Progress)
 - Write Dockerfile manually
 - Build and run Docker image locally
 - Test Xkart in browser via Docker
@@ -64,7 +64,12 @@ All pages are fully linked and hosted locally in the browser.
 
 Built a fully functional Python Flask backend with SQLite database, user authentication, sessions, password hashing and REST APIs for product and cart.
 
-### Level 3 - Docker (Coming Soon)
+### Level 3 - Docker (In Progress)
+- [ ] Write Dockerfile manually
+- [ ] Build Docker image locally
+- [ ] Run Xkart in Docker container
+- [ ] Test in browser via Docker
+- [ ] Add Nginx inside container
 
 ## About This Project
 The frontend (HTML & CSS) was built with AI assistance to accelerate UI development. The backend, Docker, and infrastructure are implemented manually by me as part of my DevOps learning journey. AI is used as a learning and guidance tool throughout the development process.
