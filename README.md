@@ -18,12 +18,12 @@ and growing into a fully containerized, cloud-deployed application.
 ### Level 1 - Static Frontend (Completed)✅
 - Login Page
 - Dashboard Page
-- Homepage
-- Product Page
+- Home Page
+- Products Page
 - Cart Page
 - Profile Page
 - Settings Page
-- 404 Page
+- Custom 404 Page
 - Register Page
 - All pages linked together
 
@@ -42,25 +42,25 @@ and growing into a fully containerized, cloud-deployed application.
 ## Progress
 
 ### Level 1 - Static Frontend ✅
-- [x] Login page completed
-- [x] Dashboard page completed
-- [x] Homepage completed
-- [x] Product page completed
-- [x] Cart page completed
-- [x] Profile page completed
-- [x] Settings page completed
-- [x] 404 page completed
-- [x] Register page completed
+- [x] Login page
+- [x] Dashboard page
+- [x] Home Page
+- [x] Products page
+- [x] Cart page
+- [x] Profile page
+- [x] Settings page
+- [x] Custom 404 page
+- [x] Register page
 - [x] All pages linked together
 
 Built a complete static e-commerce frontend using HTML and CSS.
 All pages are fully linked and hosted locally in the browser.
 
 ### Level 2 - Python Flask Backend ✅
-- [x] Flask app setup completed
-- [x] User authentication completed
-- [x] Database integration completed
-- [x] REST APIs completed
+- [x] Flask app setup
+- [x] User authentication
+- [x] Database integration
+- [x] REST APIs
 
 Built a fully functional Python Flask backend with SQLite database, user authentication, sessions, password hashing and REST APIs for product and cart.
 
