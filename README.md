@@ -11,7 +11,7 @@ and growing into a fully containerized, cloud-deployed application.
 
 ## Tech Stack
 - HTML/CSS (Level 1) ✅
-- Python + Flask (Level 2)
+- Python + Flask (Level 2) ✅
 - Docker + Nginx (Level 3)
 
 ## Levels
@@ -27,7 +27,7 @@ and growing into a fully containerized, cloud-deployed application.
 - Register Page
 - All pages linked together
 
-### Level 2 - Python Flask Backend (In Progress)
+### Level 2 - Python Flask Backend (Completed)✅
 - Backend development with Flask
 - User authentication and sessions
 - Database integration
@@ -56,11 +56,13 @@ and growing into a fully containerized, cloud-deployed application.
 Built a complete static e-commerce frontend using HTML and CSS.
 All pages are fully linked and hosted locally in the browser.
 
-### Level 2 - Python Flask Backend (In Progress)
+### Level 2 - Python Flask Backend ✅
 - [x] Flask app setup completed
 - [x] User authentication completed
 - [x] Database integration completed
-- [ ] REST APIs
+- [x] REST APIs completed
+
+Built a fully functional Python Flask backend with SQLite database, user authentication, sessions, password hashing and REST APIs for product and cart.
 
 ### Level 3 - Docker (Coming Soon)
 
